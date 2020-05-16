@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import mysql.connector
 import pandas as pd
 import time
 
@@ -11,34 +10,6 @@ restaurants_urls = f.read().split(",")
 restaurants_urls = list(set([x.strip("[]' ") for x in restaurants_urls]))
 
 headers = {'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36', 'Accept-Language': 'en-US,en;q=0.8'}
-
-add_restaurant = 	("INSERT INTO restaurants "
-					"(name, neighborhood, avg_rating, #_of_ratings, avg_cost, cash_cards?) "
-					"VALUES (%s, %s, %f, %d, %d, %s)")
-
-add_cuisine = 	("INSERT INTO cuisines "
-				"(name) "
-				"VALUES (%s)")
-
-add_info = 	("INSERT INTO infos "
-			"(name) "
-			"VALUES (%s)")
-
-add_type = 	("INSERT INTO types "
-			"(name) "
-			"VALUES (%s)")
-
-add_rest_type =	("INSERT INTO rest_type "
-				"(rest_ID, type_ID) "
-				"VALUES ((%d, %d)")
-
-add_rest_cuisine =	("INSERT INTO rest_cuisine "
-					"(rest_ID, cuisine_ID) "
-					"VALUES ((%d, %d)")
-
-add_rest_info =	("INSERT INTO rest_info "
-				"(rest_ID, info_ID) "
-				"VALUES (%d, %d)")
 
 restaurants = pd.DataFrame(columns=['ID', 'name', 'neighborhood', 'avg_rating', '#_of_ratings', 'avg_cost', 'cash_cards?', 'type', 'cuisine', 'more_infos'])
 
@@ -56,7 +27,7 @@ for i in range(0, len(restaurants_urls)):
 		num_of_ratings = soup.find('p', string=['REVIEW', 'REVIEWS']).previous_sibling.string
 		avg_cost = soup.find('h5', string='Average Cost').next_sibling.string
 		cash_cards = soup.find('h5', string='More Info').previous_sibling.string
-		target_div = soup.find('h1').next_sibling
+		target_div = soup.find('h1').next_sibling.div
 		rest_type = target_div.find_all('a', title=True)
 		rest_type = [typology.string for typology in rest_type]
 		cuisines = target_div.find_all('a', title=False)

@@ -2,12 +2,10 @@ import pandas as pd
 import numpy as np
 import requests
 from bs4 import BeautifulSoup
-import mysql.connector
-from mysql.connector import errorcode
 import time
 import random as rd
 
-headers = {'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
+headers = {'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36', 'Accept-Language': 'en-US,en;q=0.8'}
 response = requests.get('https://www.zomato.com/grande-lisboa', headers=headers)
 html = response.content
 soup = BeautifulSoup(html, 'lxml')
